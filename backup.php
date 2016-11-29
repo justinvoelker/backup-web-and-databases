@@ -183,7 +183,7 @@ foreach ($databases as $database) {
     }
 
     /* Execute actual backup of database */
-    $cmd = '/usr/bin/mysqldump -h ' . $database_host . ' -u ' . $database_username . ' -p' . $database_password . ' ' . $database . ' | gzip > ' . $database_hourly;
+    $cmd = '/usr/bin/mysqldump -h ' . $database_host . ' -u ' . $database_username . ' -p\'' . $database_password . '\' ' . $database . ' | gzip > ' . $database_hourly;
     if (executeCommand($cmd)) {
         writeLog('database - created ' . $database_hourly . ' via mysqldump');
     } else {
