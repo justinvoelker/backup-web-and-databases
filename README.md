@@ -59,7 +59,7 @@ is executed, the most recent hourly backup is saved as
 ## Download
 
 Navigate to the directory where you would like to download the project
-and execute a `git clone` to pull the project. This commany will create
+and execute a `git clone` to pull the project. This command will create
 a new directory named `backup-web-and-databases` which contains the
 project (you can rename this directory if desired). Once pulled, use
 composer to retrieve project dependencies.
@@ -67,6 +67,7 @@ composer to retrieve project dependencies.
 ```
 cd ~
 git clone https://github.com/justinvoelker/backup-web-and-databases.git
+cd backup-web-and-databases
 composer install --no-dev
 ```
 
