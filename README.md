@@ -78,7 +78,6 @@ updated. Copy the sample config file and edit the copy as appropriate.
 Some values are required while others can likely be left as needed.
 
 ```
-cd ~/backup-web-and-databases
 cp config/config-sample.php config/config.php
 vi config/config.php
 ```
