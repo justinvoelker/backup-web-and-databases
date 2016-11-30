@@ -98,9 +98,9 @@ chdir('/');
 if (file_exists($directory_backups . 'web/hourly.tar.gz')) {
     $cmd = 'cp -p ' . $directory_backups . 'web/hourly.tar.gz ' . $directory_backups . 'web/hourly-1.tar.gz';
     if (executeCommand($cmd)) {
-        writeLog('web - web/hourly.tar.gz copied to web/hourly-1.tar.gz');
+        writeLog('web - copied web/hourly.tar.gz to web/hourly-1.tar.gz');
     } else {
-        writeLog('web - error copying web/hourly.tar.gz to web/hourly-1.tar.gz', true);
+        writeLog('web - ERROR copying web/hourly.tar.gz to web/hourly-1.tar.gz', true);
     }
 }
 
@@ -109,16 +109,16 @@ $cmd = 'tar czf ' . $directory_backups . 'web/hourly.tar.gz ' . substr($web_dire
 if (executeCommand($cmd)) {
     writeLog('web - created web/hourly.tar.gz');
 } else {
-    writeLog('web - error creating web/hourly.tar.gz', true);
+    writeLog('web - ERROR creating web/hourly.tar.gz', true);
 }
 
 /* Based on specified hour, this is a daily backup, copy hourly to daily. */
 if (date("H") == $daily_backup_at_hour) {
     $cmd = 'cp -p ' . $directory_backups . 'web/hourly.tar.gz ' . $directory_backups . 'web/daily.tar.gz';
     if (executeCommand($cmd)) {
-        writeLog('web - web/hourly.tar.gz copied to web/daily.tar.gz');
+        writeLog('web - copied web/hourly.tar.gz to web/daily.tar.gz');
     } else {
-        writeLog('web - error copying web/hourly.tar.gz to web/daily.tar.gz', true);
+        writeLog('web - ERROR copying web/hourly.tar.gz to web/daily.tar.gz', true);
     }
 }
 
@@ -126,9 +126,9 @@ if (date("H") == $daily_backup_at_hour) {
 if (date("H") == $daily_backup_at_hour && date("w") == $weekly_backup_on_day) {
     $cmd = 'cp -p ' . $directory_backups . 'web/hourly.tar.gz ' . $directory_backups . 'web/weekly.tar.gz';
     if (executeCommand($cmd)) {
-        writeLog('web - web/hourly.tar.gz copied to web/weekly.tar.gz');
+        writeLog('web - copied web/hourly.tar.gz to web/weekly.tar.gz');
     } else {
-        writeLog('web - error copying web/hourly.tar.gz to web/weekly.tar.gz', true);
+        writeLog('web - ERROR copying web/hourly.tar.gz to web/weekly.tar.gz', true);
     }
 }
 
@@ -139,7 +139,7 @@ if (date("H") == $daily_backup_at_hour && date("w") == $weekly_backup_on_day) {
 /* Connect to database (log message if trouble connecting) */
 $mysqli = new mysqli($database_host, $database_username, $database_password);
 if ($mysqli->connect_errno) {
-    writeLog('database - error connecting to database (' . $mysqli->connect_errno . ')', true);
+    writeLog('database - ERROR connecting to database (' . $mysqli->connect_errno . ')', true);
 }
 
 /* Build array of databases to backup (every database the user has access to) */
@@ -153,7 +153,7 @@ if ($result_sdb = $mysqli->query("SHOW DATABASES")) {
         }
     }
 } else {
-    writeLog('database - error executing SHOW DATABASES', true);
+    writeLog('database - ERROR executing SHOW DATABASES', true);
 }
 
 /* Change working directory to script directory to create backups using relative paths */
@@ -176,9 +176,9 @@ foreach ($databases as $database) {
     if (file_exists($database_hourly)) {
         $cmd = 'cp -p ' . $database_hourly . ' ' . $database_hourly_1;
         if (executeCommand($cmd)) {
-            writeLog('database - ' . $database_hourly . ' copied to ' . $database_hourly_1);
+            writeLog('database - copied ' . $database_hourly . ' to ' . $database_hourly_1);
         } else {
-            writeLog('database - error copying ' . $database_hourly . ' to ' . $database_hourly_1, true);
+            writeLog('database - ERROR copying ' . $database_hourly . ' to ' . $database_hourly_1, true);
         }
     }
 
@@ -187,16 +187,16 @@ foreach ($databases as $database) {
     if (executeCommand($cmd)) {
         writeLog('database - created ' . $database_hourly . ' via mysqldump');
     } else {
-        writeLog('database - error creating ' . $database_hourly . ' via mysqldump', true);
+        writeLog('database - ERROR creating ' . $database_hourly . ' via mysqldump', true);
     }
 
     /* Based on specified hour, this is a daily backup, copy hourly to daily. */
     if (date("H") == $daily_backup_at_hour) {
         $cmd = 'cp -p ' . $database_hourly . ' ' . $database_daily;
         if (executeCommand($cmd)) {
-            writeLog('database - ' . $database_hourly . ' copied to ' . $database_daily);
+            writeLog('database - copied ' . $database_hourly . ' to ' . $database_daily);
         } else {
-            writeLog('database - error copying ' . $database_hourly . ' to ' . $database_daily, true);
+            writeLog('database - ERROR copying ' . $database_hourly . ' to ' . $database_daily, true);
         }
     }
 
@@ -204,9 +204,9 @@ foreach ($databases as $database) {
     if (date("H") == $daily_backup_at_hour && date("w") == $weekly_backup_on_day) {
         $cmd = 'cp -p ' . $database_hourly . ' ' . $database_weekly;
         if (executeCommand($cmd)) {
-            writeLog('database - ' . $database_hourly . ' copied to ' . $database_weekly);
+            writeLog('database - copied ' . $database_hourly . ' to ' . $database_weekly);
         } else {
-            writeLog('database - error copying ' . $database_hourly . ' to ' . $database_weekly, true);
+            writeLog('database - ERROR copying ' . $database_hourly . ' to ' . $database_weekly, true);
         }
     }
 }
@@ -217,9 +217,9 @@ foreach ($databases as $database) {
  */
 $cmd = 'chown -R ' . $chown_to . ':' . $chown_to . ' ' . $directory_backups . ' ' .  $directory_logs;
 if (executeCommand($cmd)) {
-    writeLog("finalize - successfully executed chown of backups and logs directories");
+    writeLog("finalize - executed chown of backups and logs directories");
 } else {
-    writeLog("finalize - error executing chown of backups and logs directories", true);
+    writeLog("finalize - ERROR executing chown of backups and logs directories", true);
 }
 
 /*
@@ -251,16 +251,16 @@ if ($send_email) {
             ->setSubject($subject)
             ->setBody($body);
         if ($mailer->send($message)) {
-            writeLog("finalize - successfully sent script result email via smtp");
+            writeLog("finalize - sent script result email via smtp");
         } else {
-            writeLog("finalize - error sending script result email via smtp");
+            writeLog("finalize - ERROR sending script result email via smtp");
         }
     } else {
         /* Send the message and write success/failure to log */
         if (mail($email_address, $subject, $body)) {
-            writeLog("finalize - successfully sent script result email");
+            writeLog("finalize - sent script result email");
         } else {
-            writeLog("finalize - error sending script result email");
+            writeLog("finalize - ERROR sending script result email");
         }
     }
 }
