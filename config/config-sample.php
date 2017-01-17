@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * For more details, see https://github.com/justinvoelker/backup-web-and-databases
+ */
+
 return [
 
     /* Directory where the backup script is found (absolute path) */
